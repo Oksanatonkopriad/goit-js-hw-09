@@ -56,21 +56,26 @@ function convertMs(ms) {
 function pad(value) {
     return String(value).padStart(2, '0')
 };
-
-pad();
 class Timer {
     constructor() {
         this.isActive = false;
     }
 
     start() {
+        this.intervalId = null;
+        btnStart.disabled = true;
+        inputDate.disabled = true;
         if (this.isActive) {
             return;
         }
         this.isActive = true;
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
             const deltaTime = fp.selectedDates[0] - Date.now();
             const { days, hours, minutes, seconds } = convertMs(deltaTime);
+
+            if (deltaTime <= 1000) {
+                clearInterval(this.intervalId);
+            }
 
         daysNumber.textContent = `${pad(days)}`
         hoursNumber.textContent = `${pad(hours)}`
